@@ -11,6 +11,8 @@ const axios = require("axios");
 const bodyParser = require('body-parser');
 
 const app = express();
+app.use(express.static("public"));
+
 
 if (
   !authConfig.domain ||
