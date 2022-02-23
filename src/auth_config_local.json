@@ -3,8 +3,8 @@
   "clientId": "fXq3Zr77II2Tg3KeknMJd1hovp2F2wIn",
   "clientSecret": "_P3ej96-1WBS7Zpo21JDxnmqzsE1K3rN-l2T-hsk5s1Fx6yVXjzswWcEmABLlPF_",
   "audience": "https://pizza42.com",
-  "apiUri": "https://pizza-42-api.herokuapp.com",
-  "appUri": "https://pizza-42-auth0.herokuapp.com",
+  "apiUri": "http://localhost:3001",
+  "appUri": "http://localhost:8080",
   "errorPath": "/error",
   "scopes": "read:users update:users create:user_tickets"
 }
