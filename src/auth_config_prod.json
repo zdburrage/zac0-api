@@ -1,9 +1,0 @@
-{
-    "domain": "dev-aam3gkbf.us.auth0.com",
-    "clientId": "kup0idWFmiwEAFeNbUtReI7kblEVLjzs",
-    "audience": "https://pizza42.com",
-    "apiUri": "https://pizza-42-auth0.herokuapp.com",
-    "appUri": "https://pizza-42-auth0.herokuapp.com",
-    "errorPath": "/error"
-  }
-  

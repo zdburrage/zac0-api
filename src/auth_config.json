@@ -1,0 +1,11 @@
+{
+  "domain": "dev-aam3gkbf.us.auth0.com",
+  "clientId": "kup0idWFmiwEAFeNbUtReI7kblEVLjzs",
+  "clientSecret": "_P3ej96-1WBS7Zpo21JDxnmqzsE1K3rN-l2T-hsk5s1Fx6yVXjzswWcEmABLlPF_",
+  "audience": "https://pizza42.com",
+  "apiUri": "https://pizza-42-auth0.herokuapp.com",
+  "appUri": "https://pizza-42-auth0.herokuapp.com",
+  "errorPath": "/error",
+  "scopes": "read:users update:users"
+}
+  
