@@ -107,7 +107,7 @@ app.use(express.json());
 app.post('/api/verification-email', checkJwt, (req, res) => {
 
   let objWithId = {
-    id: req.body.user_id
+    user_id: req.body.user_id
   }
 
   auth0.sendEmailVerification(objWithId)

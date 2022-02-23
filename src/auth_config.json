@@ -6,6 +6,6 @@
   "apiUri": "https://pizza-42-auth0.herokuapp.com",
   "appUri": "https://pizza-42-auth0.herokuapp.com",
   "errorPath": "/error",
-  "scopes": "read:users update:users"
+  "scopes": "read:users update:users create:user_tickets"
 }
   
