@@ -1,4 +1,3 @@
-
 const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
@@ -6,7 +5,7 @@ const cors = require('cors');
 const jwt = require('express-jwt');
 const jwtScope = require('express-jwt-scope');
 const jwksRsa = require('jwks-rsa');
-const authConfig = require('./auth_config.json');  
+const authConfig = require('./auth_config.json');
 const axios = require("axios");
 const bodyParser = require('body-parser');
 
@@ -14,8 +13,7 @@ const app = express();
 app.use(express.static("public"));
 
 
-if (
-  !authConfig.domain ||
+if (!authConfig.domain ||
   !authConfig.audience ||
   authConfig.audience === "YOUR_API_IDENTIFIER"
 ) {
@@ -48,6 +46,7 @@ var auth0 = new ManagementClient({
 
 
 
+
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({
     cache: true,
@@ -61,11 +60,28 @@ const checkJwt = jwt({
   algorithms: ['RS256'],
 });
 
+app.use(express.json());
+app.post('/api/order', checkJwt, jwtScope('write:orders'), (req, res) => {
+  let objWithId = {
+    id: req.body.user_id
+  }
+  let orders = {
+    orders: req.body.orders
+  }
+
+  auth0.updateUserMetadata(objWithId, orders)
+    .then(response => {
+      res.send(response);
+    })
+    .catch(err => {
+      res.status(400).send(err);
+    });
+});
+
 
 app.get('/api/pizza', checkJwt, (req, res) => {
   res.send({
-    pizzas: [
-      {
+    pizzas: [{
         type: 'Cheese',
         price: 5
       },
@@ -87,24 +103,6 @@ app.get('/api/pizza', checkJwt, (req, res) => {
 
 
 app.use(express.json());
-app.post('/api/order', checkJwt, jwtScope('write:orders'), (req, res) => {
-  let objWithId = {
-    id: req.body.user_id
-  }
-  let orders = {
-    orders: req.body.orders
-  }
-
-  auth0.updateUserMetadata(objWithId, orders)
-  .then(response => {
-    res.send(response);
-  })
-  .catch(err => {
-    res.status(400).send(err);
-  });
-});
-
-app.use(express.json());
 app.post('/api/verification-email', checkJwt, (req, res) => {
 
   let objWithId = {
@@ -112,12 +110,12 @@ app.post('/api/verification-email', checkJwt, (req, res) => {
   }
 
   auth0.sendEmailVerification(objWithId)
-  .then(response => {
-    res.send(response);
-  })
-  .catch(err => {
-    res.status(400).send(err);
-  });
+    .then(response => {
+      res.send(response);
+    })
+    .catch(err => {
+      res.status(400).send(err);
+    });
 
 });
 
@@ -130,12 +128,31 @@ app.post('/api/change-password', checkJwt, (req, res) => {
   }
 
   auth0.createPasswordChangeTicket(objWithId)
-  .then(response => {
-    res.send(response);
-  })
-  .catch(err => {
-    res.status(400).send(err);
-  });
+    .then(response => {
+      res.send(response);
+    })
+    .catch(err => {
+      res.status(400).send(err);
+    });
+
+});
+
+app.use(express.json());
+app.post('/api/delete-account', checkJwt, (req, res) => {
+
+  let objWithId = {
+    id: req.body.user_id
+  }
+
+
+  auth0.deleteUser(objWithId)
+    .then(response => {
+      res.send(response);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(400).send(err);
+    });
 
 });
 
