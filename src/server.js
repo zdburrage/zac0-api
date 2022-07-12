@@ -2,18 +2,16 @@ const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
-const jwt = require('express-jwt');
-const jwtScope = require('express-jwt-scope');
+const {expressjwt: jwt} = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
-const authConfig = require('./auth_config.json');
-const axios = require("axios");
-const bodyParser = require('body-parser');
+const authConfig = require('../../auth_config.json');
+const axios = require('axios');
 
 const app = express();
-app.use(express.static("public"));
 
 
-if (!authConfig.domain ||
+if (
+  !authConfig.domain ||
   !authConfig.audience ||
   authConfig.audience === "YOUR_API_IDENTIFIER"
 ) {
@@ -34,15 +32,13 @@ app.use(
 
 
 
-
 var ManagementClient = require('auth0').ManagementClient;
 var auth0 = new ManagementClient({
   domain: authConfig.domain,
   clientId: authConfig.clientId,
   clientSecret: authConfig.clientSecret,
-  scope: authConfig.scopes,
+  scope: 'read:organizations'
 });
-
 
 
 
@@ -60,103 +56,52 @@ const checkJwt = jwt({
   algorithms: ['RS256'],
 });
 
-app.use(express.json());
-app.post('/api/order', checkJwt, jwtScope('write:orders'), (req, res) => {
-  let objWithId = {
-    id: req.body.user_id
-  }
-  let orders = {
-    orders: req.body.orders
-  }
-
-  auth0.updateUserMetadata(objWithId, orders)
-    .then(response => {
-      res.send(response);
-    })
-    .catch(err => {
-      res.status(400).send(err);
-    });
-});
-
-
-app.get('/api/pizza', checkJwt, (req, res) => {
+app.get('/api/external', checkJwt, (req, res) => {
   res.send({
-    pizzas: [{
-        type: 'Cheese',
-        price: 5
-      },
-      {
-        type: 'Pepperoni',
-        price: 5
-      },
-      {
-        type: 'Sausage',
-        price: 6
-      },
-      {
-        type: 'Supreme',
-        price: 6
-      }
-    ]
+    msg: 'Your access token was successfully validated!',
   });
 });
 
+app.get('/api/organizations', (req, res) => {
+  
+  auth0.organizations.getAll()
+  .then(response => {
+    res.send(response);
+  })
+  .catch(err => {
+    res.status(400).send(err);
+  });
 
-app.use(express.json());
-app.post('/api/verification-email', checkJwt, (req, res) => {
+})
 
-  let objWithId = {
-    user_id: req.body.user_id
-  }
+app.get('/api/organization/:id', checkJwt, (req, res) => {
+  
+  auth0.organizations.getByID({id: req.params['id']})
+  .then(response => {
+    res.send(response);
+  })
+  .catch(err => {
+    res.status(400).send(err);
+  });
 
-  auth0.sendEmailVerification(objWithId)
-    .then(response => {
-      res.send(response);
-    })
-    .catch(err => {
-      res.status(400).send(err);
-    });
+})
 
-});
+app.get('/api/games/:year', (req, res) => {
+  axios
+  .get(`https://api.collegefootballdata.com/games?year=${req.params['year']}&conference=sec`, {
+    headers: {'Authorization': 'Bearer +RZzoA0scARG6oXSPr1GfgVJOvWhjMJLW5AdhAKdu/HI7Y2vU2zzDV0sMrn6bCKU'}
+  })
+  .then(resp => {
+    console.log(`statusCode: ${resp.status}`);
+    console.log(resp);
+    res.send(resp.data);
+  })
+  .catch(error => {
+    console.error(error);
+    res.send(error);
+  });
+})
 
-app.use(express.json());
-app.post('/api/change-password', checkJwt, (req, res) => {
-
-  let objWithId = {
-    user_id: req.body.user_id,
-    result_url: req.body.result_url
-  }
-
-  auth0.createPasswordChangeTicket(objWithId)
-    .then(response => {
-      res.send(response);
-    })
-    .catch(err => {
-      res.status(400).send(err);
-    });
-
-});
-
-app.use(express.json());
-app.post('/api/delete-account', checkJwt, (req, res) => {
-
-  let objWithId = {
-    id: req.body.user_id
-  }
-
-
-  auth0.deleteUser(objWithId)
-    .then(response => {
-      res.send(response);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(400).send(err);
-    });
-
-});
-
-
-const port = process.env.PORT || 3001;
+const port = process.env.API_SERVER_PORT || 3001;
 
 app.listen(port, () => console.log(`Api started on port ${port}`));

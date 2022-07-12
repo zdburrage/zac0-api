@@ -1,7 +1,7 @@
 {
-  "name": "pizza-42-api",
+  "name": "zac0-api",
   "version": "1.0.0",
-  "description": "backend api for pizza 42",
+  "description": "backend api for zac0",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
