@@ -2,9 +2,9 @@ const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
-const {expressjwt: jwt} = require('express-jwt');
+const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
-const authConfig = require('../../auth_config.json');
+const authConfig = require('./auth_config.json');
 const axios = require('axios');
 
 const app = express();
