@@ -1,10 +1,10 @@
 {
-  "domain": "dev-aam3gkbf.us.auth0.com",
-  "clientId": "fXq3Zr77II2Tg3KeknMJd1hovp2F2wIn",
-  "clientSecret": "_P3ej96-1WBS7Zpo21JDxnmqzsE1K3rN-l2T-hsk5s1Fx6yVXjzswWcEmABLlPF_",
-  "audience": "https://pizza42.com",
+  "domain": "zacsandbox.us.auth0.com",
+  "clientId": "NVy2lZGmGBYjKpGTVCiRamVTuMaHX8pB",
+  "clientSecret": "tWQw_73HN7YjER68Lr8x_NjTa9Q157-uacp3Ru3OofLjtlpH8TyDKxxv5b7NVeRK",
+  "audience": "https://sec-api",
   "apiUri": "http://localhost:3001",
-  "appUri": "http://localhost:8080",
+  "appUri": "http://localhost:4200",
   "errorPath": "/error",
   "scopes": "read:users update:users create:user_tickets"
 }

@@ -3,12 +3,17 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
 const jwt = require('express-jwt');
+const jwtScope = require('express-jwt-scope');
 const jwksRsa = require('jwks-rsa');
-const authConfig = require('./auth_config.json');
-const axios = require('axios');
+const authConfig = require('./auth_config_local.json');
+const axios = require('axios').default;
+const expressJwtScope = require('express-jwt-scope');
+const qs = require('qs');
+const { consoleTestResultHandler } = require('tslint/lib/test');
+const jwtDecode = require('jwt-decode').default;
 
 const app = express();
-
+app.use(express.static("public"));
 
 if (
   !authConfig.domain ||
@@ -32,6 +37,8 @@ app.use(
 
 
 
+
+
 var ManagementClient = require('auth0').ManagementClient;
 var auth0 = new ManagementClient({
   domain: authConfig.domain,
@@ -39,6 +46,8 @@ var auth0 = new ManagementClient({
   clientSecret: authConfig.clientSecret,
   scope: 'read:organizations'
 });
+
+
 
 
 
@@ -56,10 +65,30 @@ const checkJwt = jwt({
   algorithms: ['RS256'],
 });
 
-app.get('/api/external', checkJwt, (req, res) => {
-  res.send({
-    msg: 'Your access token was successfully validated!',
-  });
+app.get('/api/external', (req, res) => {
+
+  const data = { 'client_id': '4b76e799-9039-4488-a660-a4be9d5f75b3',
+                 'scope': 'user.read openid profile offline_access',
+                 'username': 'zac@zacburragegmail.onmicrosoft.com',
+                 'password': '02YosemiteT@hoe',
+                 'grant_type': 'password'
+                 };
+  const options = {
+    method: 'POST',
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    data: qs.stringify(data),
+    url: 'https://login.microsoftonline.com/634d0af2-d73a-4242-9485-2ae2601952a1/oauth2/v2.0/token',
+  };
+
+  axios(options).then(
+    response => {
+      console.log(response);
+      const claims = jwtDecode(response.data.id_token);
+      res.send(claims);
+    }
+  );
+
+
 });
 
 app.get('/api/organizations', (req, res) => {
@@ -100,6 +129,43 @@ app.get('/api/games/:year', (req, res) => {
     console.error(error);
     res.send(error);
   });
+})
+
+
+app.post('/api/campaigns/password', checkJwt, jwtScope('create:campaigns'), (req, res) => {
+  
+  auth0.createPasswordChangeTicket()
+  .then(response => {
+    res.send(response);
+  })
+  .catch(err => {
+    res.status(400).send(err);
+  });
+
+})
+
+app.use(express.json());
+
+app.post('/api/users/:sub/sec-profile', checkJwt, (req, res) => {
+
+  var objWithId = {
+    id: req.params['sub']
+  };
+
+  console.log(req.body);
+
+  var updatedMetadata = {
+    sec_credentials: req.body['sec_credentials']
+  }
+  
+  auth0.updateUserMetadata(objWithId, updatedMetadata)
+  .then(response => {
+    res.send(response);
+  })
+  .catch(err => {
+    res.status(400).send(err);
+  });
+
 })
 
 const port = process.env.PORT || 3001;
