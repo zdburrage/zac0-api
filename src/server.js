@@ -7,9 +7,7 @@ const jwtScope = require('express-jwt-scope');
 const jwksRsa = require('jwks-rsa');
 const authConfig = require('./auth_config_local.json');
 const axios = require('axios').default;
-const expressJwtScope = require('express-jwt-scope');
 const qs = require('qs');
-const { consoleTestResultHandler } = require('tslint/lib/test');
 const jwtDecode = require('jwt-decode').default;
 
 const app = express();
