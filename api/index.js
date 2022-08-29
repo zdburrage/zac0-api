@@ -5,7 +5,7 @@ const cors = require('cors');
 const jwt = require('express-jwt');
 const jwtScope = require('express-jwt-scope');
 const jwksRsa = require('jwks-rsa');
-const authConfig = require('./auth_config.json');
+const authConfig = require('../src/auth_config.json');
 const axios = require('axios').default;
 const qs = require('qs');
 const jwtDecode = require('jwt-decode').default;
@@ -61,6 +61,13 @@ const checkJwt = jwt({
   audience: authConfig.audience,
   issuer: `https://${authConfig.domain}/`,
   algorithms: ['RS256'],
+});
+
+app.get('/api', (req, res) => {
+  const path = `/api/item/${v4()}`;
+  res.setHeader('Content-Type', 'text/html');
+  res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
+  res.end(`Hello! Go to item: <a href="${path}">${path}</a>`);
 });
 
 app.get('/api/external', (req, res) => {
