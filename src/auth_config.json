@@ -4,6 +4,6 @@
   "clientSecret": "tWQw_73HN7YjER68Lr8x_NjTa9Q157-uacp3Ru3OofLjtlpH8TyDKxxv5b7NVeRK",
   "audience": "https://sec-api",
   "apiUri": "https://zac0-api.vercel.app",
-  "appUri": "https://zacsandbox.com",
+  "appUri": "https://www.zacsandbox.com",
   "errorPath": "/error"
 }
