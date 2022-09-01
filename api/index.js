@@ -39,7 +39,7 @@ app.use(
 
 var ManagementClient = require('auth0').ManagementClient;
 var auth0 = new ManagementClient({
-  domain: authConfig.domain,
+  domain: authConfig.customDomain,
   clientId: authConfig.clientId,
   clientSecret: authConfig.clientSecret,
   scope: 'read:organizations'
