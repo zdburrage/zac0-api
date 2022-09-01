@@ -39,7 +39,7 @@ app.use(
 
 var ManagementClient = require('auth0').ManagementClient;
 var auth0 = new ManagementClient({
-  domain: authConfig.customDomain,
+  domain: authConfig.domain,
   clientId: authConfig.clientId,
   clientSecret: authConfig.clientSecret,
   scope: 'read:organizations'
@@ -55,11 +55,11 @@ const checkJwt = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: `https://${authConfig.domain}/.well-known/jwks.json`,
+    jwksUri: `https://${authConfig.customDomain}/.well-known/jwks.json`,
   }),
 
   audience: authConfig.audience,
-  issuer: `https://${authConfig.domain}/`,
+  issuer: `https://${authConfig.customDomain}/`,
   algorithms: ['RS256'],
 });
 
