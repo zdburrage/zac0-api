@@ -69,7 +69,7 @@ app.get('/api/external', (req, res) => {
   const data = { 'client_id': '4b76e799-9039-4488-a660-a4be9d5f75b3',
                  'scope': 'user.read openid profile offline_access',
                  'username': 'zac@zacburragegmail.onmicrosoft.com',
-                 'password': '02YosemiteT@hoe',
+                 'password': '',
                  'grant_type': 'password'
                  };
   const options = {
