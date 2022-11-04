@@ -114,6 +114,18 @@ app.get('/api/organization/:id', checkJwt, (req, res) => {
 
 })
 
+app.get('/api/clients', checkJwt, (req, res) => {
+  
+  auth0.getClients()
+  .then(response => {
+    res.send(response);
+  })
+  .catch(err => {
+    res.status(400).send(err);
+  });
+
+})
+
 app.get('/api/games/:year', (req, res) => {
   axios
   .get(`https://api.collegefootballdata.com/games?year=${req.params['year']}&conference=sec`, {
