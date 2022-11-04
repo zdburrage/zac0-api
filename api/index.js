@@ -143,6 +143,7 @@ app.post('/api/campaigns/password', checkJwt, jwtScope('create:campaigns'), (req
 
 })
 
+app.use(express.json());
 app.post('/api/connections/create', checkJwt, (req, res) => {
 
   console.log(req.body['data']);
