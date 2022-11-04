@@ -145,9 +145,9 @@ app.post('/api/campaigns/password', checkJwt, jwtScope('create:campaigns'), (req
 
 app.post('/api/connections/create', checkJwt, (req, res) => {
 
-  console.log(req);
+  console.log(req.body['data']);
   
-  auth0.createConnection(req.body)
+  auth0.createConnection(req.body['data'])
   .then(response => {
     res.send(response);
   })
