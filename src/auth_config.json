@@ -6,5 +6,6 @@
   "audience": "https://sec-api",
   "apiUri": "https://zac0-api.vercel.app",
   "appUri": "https://www.zacsandbox.com",
-  "errorPath": "/error"
+  "errorPath": "/error",
+  "scopes": "read:users update:users create:user_tickets"
 }
