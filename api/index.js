@@ -183,6 +183,18 @@ app.post('/api/connections/create', checkJwt, guard.check(['create:connections']
 
 })
 
+app.delete('/api/connections', checkJwt, (req, res) => {
+  
+  auth0.deleteConnection({id: req.params['id']})
+  .then(response => {
+    res.send(response);
+  })
+  .catch(err => {
+    res.status(400).send(err);
+  });
+
+})
+
 app.use(express.json());
 
 app.post('/api/users/:sub/sec-profile', checkJwt, (req, res) => {
