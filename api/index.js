@@ -183,7 +183,7 @@ app.post('/api/connections/create', checkJwt, guard.check(['create:connections']
 
 })
 
-app.delete('/api/connections', checkJwt, (req, res) => {
+app.delete('/api/connections/:id', checkJwt, (req, res) => {
   
   auth0.deleteConnection({id: req.params['id']})
   .then(response => {
