@@ -114,6 +114,18 @@ app.get('/api/organization/:id', checkJwt, (req, res) => {
 
 })
 
+app.get('/api/organization/:id/members', checkJwt, (req, res) => {
+  
+  auth0.organizations.getMembers({id: req.params['id']})
+  .then(response => {
+    res.send(response);
+  })
+  .catch(err => {
+    res.status(400).send(err);
+  });
+
+})
+
 app.get('/api/clients', checkJwt, (req, res) => {
   
   auth0.getClients()
