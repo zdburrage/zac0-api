@@ -139,7 +139,7 @@ app.get('/api/clients', checkJwt, (req, res) => {
 })
 
 
-app.get('/api/connections', checkJwt('create:connections'), (req, res) => {
+app.get('/api/connections', checkJwt, jwtScope('create:connections'), (req, res) => {
 
   auth0.getConnections()
   .then(response => {
