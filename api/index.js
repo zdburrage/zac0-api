@@ -138,9 +138,9 @@ app.get('/api/clients', checkJwt, (req, res) => {
 
 })
 
-app.get('/api/connections', checkJwt, (req, res) => {
+app.get('/api/organizations/:orgId/connections', checkJwt, (req, res) => {
   
-  auth0.getConnections()
+  auth0.organizations.getEnabledConnections({ id: req.params['orgId']})
   .then(response => {
     res.send(response);
   })
