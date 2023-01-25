@@ -138,8 +138,9 @@ app.get('/api/clients', checkJwt, (req, res) => {
 
 })
 
-
-app.get('/api/connections', checkJwt, jwtScope('create:connections'), (req, res) => {
+app.use(express.json());
+var guard = require('express-jwt-permissions')()
+app.get('/api/connections', checkJwt, guard.check(['create:connections']), (req, res) => {
 
   auth0.getConnections()
   .then(response => {
