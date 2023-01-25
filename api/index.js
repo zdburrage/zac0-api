@@ -138,17 +138,22 @@ app.get('/api/clients', checkJwt, (req, res) => {
 
 })
 
+
+app.get('/api/connections', checkJwt('create:connections'), (req, res) => {
+
+  auth0.getConnections()
+  .then(response => {
+    res.send(response);
+  })
+  .catch(err => {
+    res.status(400).send(err);
+  });
+
+})
+
+
 app.get('/api/organizations/:orgId/connections', checkJwt, (req, res) => {
 
-  if (req.params['orgId'] === undefined) {
-    auth0.getConnections()
-    .then(response => {
-      res.send(response);
-    })
-    .catch(err => {
-      res.status(400).send(err);
-    });
-  } else {
     auth0.organizations.getEnabledConnections({ id: req.params['orgId']})
     .then(response => {
       res.send(response);
@@ -156,8 +161,6 @@ app.get('/api/organizations/:orgId/connections', checkJwt, (req, res) => {
     .catch(err => {
       res.status(400).send(err);
     });
-  }
-  
 
 })
 
