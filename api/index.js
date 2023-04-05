@@ -138,6 +138,12 @@ app.get('/api/clients', checkJwt, (req, res) => {
 
 })
 
+app.post('/api/b2c/password', (req, res) => {
+  
+  res.status(204).send();
+
+})
+
 app.use(express.json());
 var guard = require('express-jwt-permissions')()
 app.get('/api/connections', checkJwt, guard.check(['create:connections']), (req, res) => {
