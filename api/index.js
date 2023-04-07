@@ -145,7 +145,7 @@ app.post('/api/b2c/password', (req, res) => {
       {
          "type":"com.okta.action.update",
          "value":{
-            "credential":"UNVERIFIED"
+            "credential":"VERIFIED"
          }
       }
    ]
