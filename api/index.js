@@ -140,7 +140,16 @@ app.get('/api/clients', checkJwt, (req, res) => {
 
 app.post('/api/b2c/password', (req, res) => {
   
-  res.status(204).send();
+  res.status(200).send({
+    "commands":[
+      {
+         "type":"com.okta.action.update",
+         "value":{
+            "credential":"UNVERIFIED"
+         }
+      }
+   ]
+  });
 
 })
 
