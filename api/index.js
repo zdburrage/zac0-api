@@ -113,10 +113,10 @@ app.post('/api/m2m/:userId', (req, res) => {
   }
 
   auth0.getUserPermissions({id: userId}).then(perms => {
-    let perms = perms.map(x => x.permission_name);
+    let newPerms = perms.map(x => x.permission_name);
     auth0.createClient(data)
     .then(response => {
-      auth0.createClientGrant({client_id: response.client_id, audience: 'https://sec-api', scope: perms}).then(respo => {
+      auth0.createClientGrant({client_id: response.client_id, audience: 'https://sec-api', scope: newPerms}).then(respo => {
         res.send(response);
       })
     })
