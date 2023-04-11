@@ -112,12 +112,15 @@ app.post('/api/m2m/:userId', (req, res) => {
     }
   }
 
-  auth0.createClient(data)
-  .then(response => {
-    auth0.createClientGrant({client_id: response.client_id, audience: 'https://sec-api', scope: []}).then(respo => {
-      res.send(response);
+  auth0.getUserPermissions({id: userId}).then(perms => {
+    auth0.createClient(data)
+    .then(response => {
+      auth0.createClientGrant({client_id: response.client_id, audience: 'https://sec-api', scope: perms}).then(respo => {
+        res.send(response);
+      })
     })
-  }).catch(err => {
+  })
+.catch(err => {
     res.status(400).send(err);
   });
 
