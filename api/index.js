@@ -102,6 +102,27 @@ app.get('/api/organizations', (req, res) => {
 
 })
 
+app.post('/api/m2m/:userId', (req, res) => {
+
+  let userId = req.params['id']
+
+  let data = {
+    "name": `${userId}-api-client`,
+    "app_type": "non_interactive",
+    "client_metadata": {
+      "user" : userId
+    }
+  }
+  auth0.createClient(data)
+  .then(response => {
+    res.send(response)
+  }).catch(err => {
+    res.status(400).send(err);
+  });
+
+
+})
+
 app.get('/api/organization/:id', checkJwt, (req, res) => {
   
   auth0.organizations.getByID({id: req.params['id']})
@@ -134,21 +155,6 @@ app.get('/api/clients', checkJwt, (req, res) => {
   })
   .catch(err => {
     res.status(400).send(err);
-  });
-
-})
-
-app.post('/api/b2c/password', (req, res) => {
-  
-  res.status(200).send({
-    "commands":[
-      {
-         "type":"com.okta.action.update",
-         "value":{
-            "credential":"VERIFIED"
-         }
-      }
-   ]
   });
 
 })
@@ -257,6 +263,21 @@ app.post('/api/users/:sub/sec-profile', checkJwt, (req, res) => {
   })
   .catch(err => {
     res.status(400).send(err);
+  });
+
+})
+
+app.post('/api/cis/b2c/password', (req, res) => {
+  
+  res.status(200).send({
+    "commands":[
+      {
+         "type":"com.okta.action.update",
+         "value":{
+            "credential":"VERIFIED"
+         }
+      }
+   ]
   });
 
 })
