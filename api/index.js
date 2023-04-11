@@ -102,7 +102,7 @@ app.get('/api/organizations', (req, res) => {
 
 app.post('/api/m2m/:userId', (req, res) => {
 
-  let userId = req.params['id']
+  let userId = req.params['userId']
 
   let data = {
     "name": `${userId}-api-client`,
